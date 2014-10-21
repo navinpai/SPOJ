@@ -3,13 +3,14 @@
 #include<stack>
 #include <cstdlib>
 #include <sstream>
+#include<iomanip>
 
 using namespace std;
 
 std::string Convert(float number){
-    std::ostringstream buff;
-    buff<<number;
-    return buff.str();   
+	std::ostringstream buff;
+	buff<<number;
+	return buff.str();   
 }
 
 
@@ -20,9 +21,14 @@ int main(int argc, const char *argv[])
 	float opf1,opf2;
 	int testcases,i;
 	cin>>testcases;
-
+	getline(cin,input);
 	while(testcases--){
+		tempstring.clear();
+		while(!opstack.empty()){
+			opstack.pop();
+		}
 		getline(cin, input);
+		//cout<<input<<endl;
 		for(i=0;i<input.length();i++){
 			if(input[i]=='('){
 			}
@@ -31,8 +37,11 @@ int main(int argc, const char *argv[])
 				tempstring+=input[i];
 			}
 			else if(input[i]==' '){
-				opstack.push(tempstring);
-				tempstring.clear();
+				if(!tempstring.empty())
+				{   cout<<"inserted:"<<tempstring<<endl;
+					opstack.push(tempstring);
+					tempstring.clear();
+				}
 			}
 			else if(input[i]==')'){
 				op1=opstack.top();
@@ -44,29 +53,39 @@ int main(int argc, const char *argv[])
 
 				opf1=atof(op1.c_str());
 				opf2=atof(op2.c_str());
-				
+
 				tempstring.clear();
 
-				cout<<operand<<endl;
-				switch('+'){
-					case '+': tempstring=Convert(opf1+opf2);
-							  break;
-					case '-': tempstring=Convert(opf1-opf2);
-							  break;
-					case '*': tempstring=Convert(opf1*opf2);
-							  break;
-					case '/': tempstring=Convert(opf1/opf2);
-							  break;
+				switch((int)operand.c_str()[0]){
+					case '+':
+						tempstring=Convert(opf1+opf2);
+						break;
+					case '-': 
+						tempstring=Convert(opf2-opf1);
+						break;
+					case '*': 
+						tempstring=Convert(opf1*opf2);
+						break;
+					case '/': 
+						tempstring=Convert(opf2/opf1);
+						break;
 					default: break;
 				}
 
-				cout<<"op"<<tempstring<<endl;
+				//cout<<"op1:"<<opf1<<" op2:"<<opf2<<" op:"<<tempstring<<endl;
 
 				opstack.push(tempstring);
-
+				tempstring.clear();
 			}
+
 		}
-	cout<<opstack.top()<<endl;
+		if(!opstack.empty())
+			cout<<setprecision(2)<<std::fixed<<atof(opstack.top().c_str())<<endl;
+		while(!opstack.empty()){
+			opstack.pop();
+		}
+
+
 	}
 	return 0;
 }
