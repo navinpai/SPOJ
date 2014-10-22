@@ -15,7 +15,7 @@ int main(int argc, const char *argv[])
 			input1=input2;
 			input2=temp;
 		}
-		//input1 is smaller
+		// now input1 is smaller
 		int flag=0;
 		int input1length=input1.length(),i=0;
 		for(int j=0;j<input2.length();j++)
